@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Historia de Amor ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* FONDO DE CIELO ESTRELLADO */
+            background-color: #050510;
+            background-image: 
+                radial-gradient(1px 1px at 15% 15%, #ffffff, transparent),
+                radial-gradient(2px 2px at 25% 45%, #ffffff, transparent),
+                radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+                radial-gradient(2px 2px at 65% 25%, #ffffff, transparent),
+                radial-gradient(1.5px 1.5px at 85% 85%, #ffffff, transparent),
+                radial-gradient(1px 1px at 95% 50%, #ffffff, transparent),
+                radial-gradient(1.5px 1.5px at 10% 80%, #ffffff, transparent),
+                radial-gradient(2px 2px at 75% 60%, #ffffff, transparent);
+            background-size: 200px 200px;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 15px;
+        }
+
+        /* --- PANTALLA DE CARGA (LOADING) --- */
+        #loading-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #050510;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            transition: opacity 0.8s ease;
+        }
+
+        .loader-heart {
+            font-size: 60px;
+            animation: heartbeat 1.2s infinite ease-in-out;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px #ff4081;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .loader-text {
+            font-family: 'Sacramento', cursive;
+            font-size: 32px;
+            color: #ffb1c1;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(255, 64, 129, 0.5);
+        }
+
+        /* --- EFECTO ESTRELLAS FUGACES --- */
+        .shooting-star {
+            position: fixed;
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8));
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            animation: shoot infinite linear;
+        }
+
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 10px #fff, 0 0 20px #ff4081;
+        }
+
+        .shooting-star:nth-child(1) { top: 0; left: 50vw; animation-duration: 4s; animation-delay: 0s; }
+        .shooting-star:nth-child(2) { top: -20vh; left: 80vw; animation-duration: 5s; animation-delay: 2s; }
+        .shooting-star:nth-child(3) { top: 30vh; left: 100vw; animation-duration: 3.5s; animation-delay: 3.5s; }
+        .shooting-star:nth-child(4) { top: 10vh; left: 120vw; animation-duration: 6s; animation-delay: 1.5s; }
+
+        @keyframes shoot {
+            0% { transform: rotate(135deg) translateX(0); opacity: 1; }
+            100% { transform: rotate(135deg) translateX(150vw); opacity: 0; }
+        }
+
+        /* --- EFECTO CORAZONES FLOTANTES --- */
+        .floating-heart {
+            position: fixed;
+            bottom: -50px;
+            font-size: 24px;
+            color: #ff80ab;
+            text-shadow: 0 0 15px #ff4081, 0 0 30px #ff4081;
+            animation: floatUp linear infinite;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+        }
+
+        /* --- PANTALLAS GLOBALES --- */
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        /* --- TRANSICIÓN: STITCH LAMIENDO EL BORDE INFERIOR --- */
+        #transition-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+            background-color: #ffffff;
+        }
+
+        .transition-gif { 
+            width: 100%; 
+            max-width: 500px; 
+            border: none; 
+            box-shadow: none; 
+            border-radius: 0;
+            margin-bottom: 0;
+            display: block;
+        }
+
+        .glass-card {
+            background: rgba(25, 25, 35, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            width: 100%;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .lock-gif {
+            width: 150px;
+            margin-bottom: 5px;
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+        }
+
+        .glass-card h2 {
+            font-family: 'Sacramento', cursive;
+            font-size: 40px;
+            color: #ffb1c1;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 15px rgba(255, 64, 129, 0.6);
+            line-height: 1.2;
+        }
+
+        .glass-card p {
+            font-size: 14px;
+            color: #bdbdbd;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .lock-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+            color: #fff;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .lock-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+        .lock-input:focus { border-color: #ff4081; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 15px rgba(255, 64, 129, 0.3); }
+
+        .shake-error {
+            animation: shake 0.4s ease-in-out;
+            border-color: #ff5252 !important;
+            box-shadow: 0 0 15px rgba(255, 82, 82, 0.5) !important;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
+        }
+
+        .lock-btn {
+            background: linear-gradient(135deg, #ff4081, #c2185b);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 20px rgba(255, 64, 129, 0.3);
+            margin-top: 5px;
+        }
+
+        .lock-btn:active { transform: scale(0.96); }
+
+        .error-msg {
+            color: #ffb1c1;
+            font-size: 13.5px;
+            margin-top: 15px;
+            display: none;
+            font-weight: 500;
+            background: rgba(255, 64, 129, 0.15);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed rgba(255, 64, 129, 0.4);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* GIF DE PREMIO (El Beso) */
+        #prize-gif {
+            display: none;
+            width: 160px;
+            margin: 15px auto 0 auto;
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            animation: fadeIn 0.6s ease;
+        }
+
+        /* BOTÓN DE TRANSICIÓN HACIA LA LÍNEA DE TIEMPO */
+        #story-btn {
+            display: none;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #ff4081, #c2185b);
+            animation: fadeIn 0.6s ease;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL Y LÍNEA DE TIEMPO --- */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px 0;
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        #quiz-section {
+            margin: 0 auto;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        #timeline-container {
+            display: none; 
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            margin-top: 40px;
+        }
+
+        .timeline-presentation {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+
+        .standalone-stitch-gif {
+            width: 130px;
+            margin-bottom: 10px;
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+        }
+
+        header h1 { 
+            font-family: 'Sacramento', cursive; 
+            font-size: 50px; 
+            color: #ffb1c1; 
+            text-shadow: 0 2px 20px rgba(255, 64, 129, 0.7); 
+            line-height: 1.1; 
+        }
+        header p { 
+            font-size: 14px; 
+            color: #9e9e9e; 
+            margin-top: 5px;
+        }
+
+        /* LÍNEA DE TIEMPO */
+        .timeline { 
+            position: relative; 
+            padding-left: 25px; 
+            padding-right: 45px; 
+            margin-bottom: 40px; 
+            z-index: 1; 
+        }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 5px; bottom: 5px; width: 3px; background: rgba(255, 255, 255, 0.2); border-radius: 3px; z-index: 1; }
+        
+        .timeline-item { 
+            position: relative; 
+            margin-bottom: 25px; 
+            z-index: 5; 
+        }
+        
+        .timeline-dot { 
+            position: absolute; 
+            left: -32px; 
+            top: 10px; 
+            font-size: 18px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            z-index: 6; 
+            animation: pulse-heart 2s infinite;
+        }
+
+        @keyframes pulse-heart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .peeking-stitch {
+            position: absolute;
+            top: 25px; 
+            right: -40px; 
+            width: 85px; 
+            z-index: 1; 
+            pointer-events: none; 
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+        }
+
+        .memory-card {
+            background: rgba(25, 25, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.3s;
+            position: relative;
+            z-index: 2; 
+        }
+        .memory-card:active { transform: scale(0.98); }
+
+        /* ESTILO PARA FOTOS VERTICALES FIJAS */
+        .vertical-photo-container {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+        }
+
+        .bg-blur {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(15px) brightness(0.6);
+            transform: scale(1.2);
+            z-index: 1;
+        }
+
+        .actual-photo {
+            position: relative;
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* --- CARRUSEL ESTRICTAMENTE HORIZONTAL --- */
+        .travel-carousel {
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            height: 220px;
+            background-color: #000;
+            position: relative;
+            touch-action: pan-x; 
+        }
+
+        .travel-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            scroll-snap-align: start;
+            scroll-snap-stop: always; 
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .dot.active {
+            background: #ff4081;
+            width: 16px;
+            border-radius: 4px;
+        }
+
+        .memory-content { padding: 15px; }
+        .memory-date { font-size: 12px; color: #ff80ab; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
+        .memory-title { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+        
+        .memory-desc { font-size: 13px; color: #bdbdbd; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.4s ease; opacity: 0; }
+        .memory-card.active { background: rgba(40, 30, 45, 0.9); border-color: rgba(255, 128, 171, 0.4); }
+        .memory-card.active .memory-desc { max-height: 150px; opacity: 1; margin-top: 8px; }
+        .tap-hint { font-size: 11px; color: #757575; font-style: italic; margin-top: 5px; }
+
+        /* CONTADOR DE TIEMPO */
+        .counter-section { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            padding: 20px 10px; 
+            position: relative; 
+            z-index: 5; 
+        }
+        .counter-section h3 { 
+            font-size: 15px; 
+            color: #ffb1c1; 
+            margin-bottom: 12px; 
+            font-weight: 600; 
+        }
+        
+        .counter-grid { 
+            display: flex; 
+            justify-content: space-between; 
+            gap: 8px; 
+        }
+
+        .heart-box { 
+            background: linear-gradient(135deg, rgba(233, 30, 99, 0.4), rgba(136, 14, 79, 0.6));
+            backdrop-filter: blur(8px); 
+            border: 1px solid rgba(255, 128, 171, 0.4); 
+            color: white; 
+            padding: 10px 5px; 
+            border-radius: 12px; 
+            flex: 1;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            position: relative;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
+        }
+
+        .heart-box::before {
+            content: '❤️';
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .heart-box span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .heart-box span:first-child { 
+            font-size: 18px; 
+            font-weight: 700; 
+        }
+        
+        .heart-box span:last-child { 
+            font-size: 9px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            color: #ffb1c1; 
+            margin-top: 2px;
+        }
+
+        /* SECCIÓN FINAL (HUELLA) */
+        .final-section { text-align: center; margin-bottom: 40px; position: relative; z-index: 5; }
+        
+        .fingerprint-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 15px auto 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .fingerprint-wrapper.scanning::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.8) 0%, rgba(255, 0, 0, 0.4) 60%, transparent 100%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: scanLight 1s infinite alternate;
+        }
+
+        @keyframes scanLight {
+            from { transform: scale(0.9); opacity: 0.6; filter: blur(5px); }
+            to { transform: scale(1.3); opacity: 1; filter: blur(8px); }
+        }
+
+        .scan-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            transform: rotate(-90deg);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .scan-ring circle {
+            fill: none;
+            stroke: #ff4081;
+            stroke-width: 4;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 2s linear;
+            stroke-linecap: round;
+        }
+
+        .fingerprint-wrapper.scanning .scan-ring circle {
+            stroke-dashoffset: 0;
+        }
+
+        .fingerprint-img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(255, 64, 129, 0.5));
+            z-index: 2;
+            transition: transform 0.2s;
+        }
+
+        .fingerprint-wrapper:active .fingerprint-img {
+            transform: scale(0.92);
+        }
+
+        /* CAJETÍN FINAL ALARGADO */
+        .secret-love-message { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 1s ease, opacity 1s ease; 
+            opacity: 0; 
+            text-align: left; 
+            border-top: 1px dashed rgba(255, 128, 171, 0.3); 
+            margin-top: 0; 
+        }
+        
+        .secret-love-message.show { 
+            max-height: 800px; 
+            opacity: 1; 
+            margin-top: 25px; 
+            padding-top: 20px; 
+            padding-bottom: 20px;
+        }
+        
+        .secret-love-message h4 { 
+            color: #ffb1c1; 
+            font-family: 'Sacramento', cursive; 
+            font-size: 36px; 
+            text-align: center; 
+            margin-bottom: 15px; 
+        }
+        
+        .secret-love-message p { 
+            font-size: 14.5px; 
+            color: #e0e0e0; 
+            margin-bottom: 12px; 
+            text-align: justify; 
+        }
+
+        .closing-hug-gif {
+            width: 140px;
+            display: block;
+            margin: 20px auto 10px auto;
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA DE CARGA (LOADING) -->
+    <div id="loading-screen">
+        <div class="loader-heart">❤️</div>
+        <div class="loader-text">Cargando nuestra magia...</div>
+    </div>
+
+    <!-- ESTRELLAS FUGACES -->
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+
+    <!-- PANTALLA DE BLOQUEO: CLAVE -->
+    <div id="lock-screen">
+        <div class="glass-card" id="lock-card">
+            <img src="https://media.tenor.com/ir-_bntmpAgAAAAi/cocopry-stich.gif" alt="Stitch" class="lock-gif" id="main-gif">
+            <h2>Para mi princesa</h2>
+            <p>Para desbloquear tu sorpresa, ingresa la fecha de nuestro aniversario 🤭❤️</p>
+            <input type="password" id="passcode" class="lock-input" placeholder="" maxlength="10">
+            <button class="lock-btn" onclick="verificarCodigo()">Desbloquear magia ✨</button>
+            <div id="error-msg" class="error-msg"></div>
+        </div>
+    </div>
+
+    <!-- TRANSICIÓN: STITCH LAMIENDO EL BORDE INFERIOR -->
+    <div id="transition-screen">
+        <img src="https://media1.tenor.com/m/p_k9R3I-RHkAAAAC/love-lilo-and-stitch.gif" alt="Stitch Limpiando" class="transition-gif">
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="main-content">
+        
+        <!-- PANTALLA 1: EL MINIJUEGO DE PREGUNTAS (EL CANDADO) -->
+        <div id="quiz-section" class="glass-card">
+            <img src="https://media1.tenor.com/m/YDieV5O-Q5AAAAAC/stitch-love.gif" alt="Stitch Cartas" class="lock-gif" id="quiz-gif" style="width: 170px;">
+            
+            <h2 id="quiz-title">Pregunta 1/2</h2>
+            <p id="quiz-desc">Antes de seguir... <br>¿Dónde fue nuestro primer abrazo? 🙈</p>
+            
+            <input type="text" id="quiz-input" class="lock-input" placeholder="Tu respuesta...">
+            <div id="quiz-error" class="error-msg"></div>
+            
+            <!-- EL GIF DEL PREMIO (El Beso) -->
+            <img src="https://media.tenor.com/2mKw9rGsLa4AAAAj/stitch-love-you.gif" alt="Premio Beso" id="prize-gif">
+
+            <button class="lock-btn" id="quiz-btn" onclick="verificarRespuesta()">Responder 💌</button>
+            
+            <!-- LLAVE MÁGICA: BOTÓN PARA ABRIR LA LÍNEA DE TIEMPO -->
+            <button class="lock-btn" id="story-btn" onclick="irALineaDeTiempo()">Ver nuestra historia 💖</button>
+        </div>
+
+        <!-- PANTALLA 2: LÍNEA DE TIEMPO (INICIA CON EL STITCH PARADO DE MANOS Y EL TÍTULO) -->
+        <div id="timeline-container">
+            
+            <div class="timeline-presentation">
+                <img src="https://media.tenor.com/g9awzfZdiosAAAAj/stitch-line-stickers.gif" alt="Stitch bailando" class="standalone-stitch-gif">
+                <header>
+                    <h1>Nuestra Historia</h1>
+                    <p>Cada capítulo a tu lado es mi favorito</p>
+                </header>
+            </div>
+
+            <div class="timeline">
+                
+                <!-- CATEGORÍA 1: NUESTRO PRIMER ENCUENTRO -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">💖</div>
+                    <img src="https://media.tenor.com/oYFvSy0dkB8AAAAj/lilo-and-stitch-hi.gif" alt="Stitch saluda" class="peeking-stitch">
+                    
+                    <div class="memory-card" onclick="toggleMemory(this)">
+                        <div class="vertical-photo-container">
+                            <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1mGGSqn94xVnjrOmFfz1NHpeHdHbOli3Y');"></div>
+                            <img src="https://lh3.googleusercontent.com/d/1mGGSqn94xVnjrOmFfz1NHpeHdHbOli3Y" alt="Nuestro Primer Encuentro" class="actual-photo">
+                        </div>
+
+                        <div class="memory-content">
+                            <div class="memory-date">Nuestro Primer Encuentro • 17/08/2023</div>
+                            <div class="memory-title">Donde todo comenzó ✨</div>
+                            <div class="tap-hint">Toca para leer la descripción 👇</div>
+                            <div class="memory-desc">El instante exacto en que el tiempo pareció detenerse y mi alma reconoció a la suya. Aquel primer abrazo se convirtió en el refugio que siempre había estado buscando sin saberlo.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CATEGORÍA 2: NUESTROS VIAJES -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">💖</div>
+                    <img src="https://media.tenor.com/oYFvSy0dkB8AAAAj/lilo-and-stitch-hi.gif" alt="Stitch saluda" class="peeking-stitch">
+                    
+                    <div class="memory-card" onclick="toggleMemory(this)">
+                        <div class="travel-carousel" id="travelCarousel" onscroll="actualizarPuntitos('travelCarousel', 'carouselDots')">
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1YMlLKpb1hbTNaH91pNUp-Ya3jgKPwWyf');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1YMlLKpb1hbTNaH91pNUp-Ya3jgKPwWyf" alt="Viaje 1" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/18-IatGSSsP6mk0a0zp5UPj_IJGW-8qV_');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/18-IatGSSsP6mk0a0zp5UPj_IJGW-8qV_" alt="Viaje 2" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1hlM2R09zKX8CzvV8UmiwnpzntJ483hXe');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1hlM2R09zKX8CzvV8UmiwnpzntJ483hXe" alt="Viaje 3" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1cTSUTPiBtt_gCmQLJC0W5qWKge63KMlk');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1cTSUTPiBtt_gCmQLJC0W5qWKge63KMlk" alt="Viaje 4" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1C_5QP9ojgwHR5zLurfafajkcywkrp6-6');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1C_5QP9ojgwHR5zLurfafajkcywkrp6-6" alt="Viaje 5" class="actual-photo">
+                            </div>
+                        </div>
+
+                        <div class="carousel-dots" id="carouselDots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+
+                        <div class="memory-content">
+                            <div class="memory-date">Nuestros Viajes</div>
+                            <div class="memory-title">Nuevos horizontes a tu lado ✈️</div>
+                            <div class="tap-hint">Desliza las fotos horizontalmente 👈 👉</div>
+                            <div class="memory-desc">Descubrir el mundo contigo le da un sentido totalmente nuevo a cada paisaje. Cada destino se vuelve mágico simplemente porque lo recorro tomado de tu mano.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORÍA 3: NUESTROS LOGROS -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">💖</div>
+                    <img src="https://media.tenor.com/oYFvSy0dkB8AAAAj/lilo-and-stitch-hi.gif" alt="Stitch saluda" class="peeking-stitch">
+
+                    <div class="memory-card" onclick="toggleMemory(this)">
+                        <div class="travel-carousel" id="logrosCarousel" onscroll="actualizarPuntitos('logrosCarousel', 'logrosDots')">
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1M8Xb1VnVJ0dQigDTb_IQ6IKWwxq_xeeF');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1M8Xb1VnVJ0dQigDTb_IQ6IKWwxq_xeeF" alt="Logro 1" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/15k5C61xSNhg58sd_hYFvtNPX3Fwsh3B5');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/15k5C61xSNhg58sd_hYFvtNPX3Fwsh3B5" alt="Logro 2" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1zkciRZEqPqLdIkVGqjrh4udqd3JPV32p');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1zkciRZEqPqLdIkVGqjrh4udqd3JPV32p" alt="Logro 3" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1_BSb87tT-Ks2XXB-QKIdtSIBlHNIG4fZ');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1_BSb87tT-Ks2XXB-QKIdtSIBlHNIG4fZ" alt="Logro 4" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1hvnUigCIjEPk2in8E8zaaSDLjPXJG-nF');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1hvnUigCIjEPk2in8E8zaaSDLjPXJG-nF" alt="Logro 5" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1PZgj-Pl6MyntjpJ-enfEcXz6U0sOzDj3');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1PZgj-Pl6MyntjpJ-enfEcXz6U0sOzDj3" alt="Logro 6" class="actual-photo">
+                            </div>
+                        </div>
+
+                        <div class="carousel-dots" id="logrosDots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+
+                        <div class="memory-content">
+                            <div class="memory-date">Nuestros Logros</div>
+                            <div class="memory-title">Creciendo y superando metas 🏆</div>
+                            <div class="tap-hint">Desliza para ver más fotos 👈 👉</div>
+                            <div class="memory-desc">Cada sueño cumplido sabe mejor porque lo celebramos juntos. Tu impulso, tu apoyo y tu fe en mí son el motor que me empuja a conquistar cualquier meta.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORÍA 4: MOMENTOS DE CELEBRACIÓN -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">💖</div>
+                    <img src="https://media.tenor.com/oYFvSy0dkB8AAAAj/lilo-and-stitch-hi.gif" alt="Stitch saluda" class="peeking-stitch">
+
+                    <div class="memory-card" onclick="toggleMemory(this)">
+                        <div class="travel-carousel" id="celebracionCarousel" onscroll="actualizarPuntitos('celebracionCarousel', 'celebracionDots')">
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1Jr1buyBsnfwU7SBq8CHE3s-roDBntufd');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1Jr1buyBsnfwU7SBq8CHE3s-roDBntufd" alt="Celebración 1" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1Z7e2Upjbu-wMfmWNlqCne_UWq0ZuTaFK');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1Z7e2Upjbu-wMfmWNlqCne_UWq0ZuTaFK" alt="Celebración 2" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1bNgYeD4S7sI_b0ExiN4k6kAgnsetkPo_');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1bNgYeD4S7sI_b0ExiN4k6kAgnsetkPo_" alt="Celebración 3" class="actual-photo">
+                            </div>
+                        </div>
+
+                        <div class="carousel-dots" id="celebracionDots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+
+                        <div class="memory-content">
+                            <div class="memory-date">Momentos de Celebración</div>
+                            <div class="memory-title">Risas y alegría pura 🎉</div>
+                            <div class="tap-hint">Desliza para ver más fotos 👈 👉</div>
+                            <div class="memory-desc">Tu sonrisa tiene la capacidad de iluminar hasta el día más gris. Festejar la vida a tu lado es recordarle al corazón lo maravilloso que es sonreír sin medidas.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORÍA 5: SIEMPRE JUNTOS -->
+                <div class="timeline-item">
+                    <div class="timeline-dot">💖</div>
+                    <img src="https://media.tenor.com/oYFvSy0dkB8AAAAj/lilo-and-stitch-hi.gif" alt="Stitch saluda" class="peeking-stitch">
+
+                    <div class="memory-card" onclick="toggleMemory(this)">
+                        <div class="travel-carousel" id="juntosCarousel" onscroll="actualizarPuntitos('juntosCarousel', 'juntosDots')">
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/14--4P4bcOUzP-lsrI_sKE0TpuQgx8VLk');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/14--4P4bcOUzP-lsrI_sKE0TpuQgx8VLk" alt="Siempre Juntos 1" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1GuFcq_B8h2CbQhbKxU4ZB8mBwEsWGvtv');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1GuFcq_B8h2CbQhbKxU4ZB8mBwEsWGvtv" alt="Siempre Juntos 2" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1gSLTVaBsN6vV19Q_Qepxh3sz5jxvpepa');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1gSLTVaBsN6vV19Q_Qepxh3sz5jxvpepa" alt="Siempre Juntos 3" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1eR97bladcGMvZoSsBM0C6TyqN1Z5VB3h');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1eR97bladcGMvZoSsBM0C6TyqN1Z5VB3h" alt="Siempre Juntos 4" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1G7i7tZWrVAUHAHNI_a67oaiIZnfnYtwc');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1G7i7tZWrVAUHAHNI_a67oaiIZnfnYtwc" alt="Siempre Juntos 5" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/1WnVfJABKfLAY7aFqVBToxFl1P0h-9g3W');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/1WnVfJABKfLAY7aFqVBToxFl1P0h-9g3W" alt="Siempre Juntos 6" class="actual-photo">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="bg-blur" style="background-image: url('https://lh3.googleusercontent.com/d/19onv698jSTdxtehxLq1t8rC37uDyKaza');"></div>
+                                <img src="https://lh3.googleusercontent.com/d/19onv698jSTdxtehxLq1t8rC37uDyKaza" alt="Siempre Juntos 7" class="actual-photo">
+                            </div>
+                        </div>
+
+                        <div class="carousel-dots" id="juntosDots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+
+                        <div class="memory-content">
+                            <div class="memory-date">Siempre Juntos</div>
+                            <div class="memory-title">La complicidad de nuestro presente ♾️</div>
+                            <div class="tap-hint">Desliza para ver más fotos 👈 👉</div>
+                            <div class="memory-desc">En los días tranquilos y en los retos más grandes, saber que estamos juntos lo cambia todo. Eres mi hogar, mi paz y mi certeza favorita en este mundo.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CONTADOR HORIZONTAL EN FORMA DE CORAZÓN -->
+            <div class="glass-card counter-section">
+                <h3>Tiempo juntos desde el 17 de Agosto de 2023</h3>
+                <div class="counter-grid">
+                    <div class="heart-box">
+                        <span id="days">0</span>
+                        <span>Días</span>
+                    </div>
+                    <div class="heart-box">
+                        <span id="hours">0</span>
+                        <span>Horas</span>
+                    </div>
+                    <div class="heart-box">
+                        <span id="minutes">0</span>
+                        <span>Minutos</span>
+                    </div>
+                    <div class="heart-box">
+                        <span id="seconds">0</span>
+                        <span>Segundos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN FINAL CON HUELLA BIOMÉTRICA -->
+            <div class="glass-card final-section" style="margin-top: 30px;">
+                <p id="fp-instruction" style="color: #9e9e9e; font-size: 13px;">Toca la huella para escanear y revelar tu mensaje 👆</p>
+                
+                <div class="fingerprint-wrapper" id="fp-wrapper" onclick="iniciarEscaneoUnico()">
+                    <svg class="scan-ring">
+                        <circle cx="50" cy="50" r="42"></circle>
+                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/1BQjkj9uFvww_X7hx9gjAEyJ4h9xxhieW" alt="Huella Digital" class="fingerprint-img">
+                </div>
+
+                <div class="secret-love-message" id="secretMessage">
+                    <h4>Para el amor de mi vida Eveli</h4>
+                    <p>Eres lo mejor que me ha pasado en la vida. Siento que lo tengo absolutamente todo teniéndote a ti a mi lado.</p>
+                    <p>Quiero agradecerte de corazón por todo este tiempo maravilloso que llevamos juntos, por cada detalle, por tu paciencia y por tu amor sincero.</p>
+                    <p>Le ruego a Dios que nos permita seguir compartiendo muchísimos años más de vida, creciendo juntos y cumpliendo cada uno de nuestros sueños de la mano. ¡Te amo con todo mi ser! ✨❤️</p>
+                    
+                    <img src="https://media.tenor.com/x6H8eO1MeRwAAAAj/stitch-hug.gif" alt="Stitch Abrazo" class="closing-hug-gif">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- PANTALLA DE CARGA INICIAL ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loading-screen');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 800);
+            }, 600);
+        });
+
+        // --- CREADOR DE CORAZONES FLOTANTES ---
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            const duration = Math.random() * 3 + 4;
+            heart.style.animationDuration = duration + 's';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), duration * 1000);
+        }
+        setInterval(createHeart, 600);
+
+        // --- SISTEMA DE CLAVE (PANTALLA DE BLOQUEO) ---
+        let intentosClave = 0;
+        const mainGif = document.getElementById('main-gif');
+        const noGifSrc = "https://media.tenor.com/_6hs-gUk_z4AAAAi/stitch-stitch-no.gif";
+
+        function verificarCodigo() {
+            const inputElement = document.getElementById('passcode');
+            const inputVal = inputElement.value.trim().replace(/[\/\-\.]/g, '');
+            const errorMsg = document.getElementById('error-msg');
+            
+            const lockScreen = document.getElementById('lock-screen');
+            const lockCard = document.getElementById('lock-card');
+            const transitionScreen = document.getElementById('transition-screen');
+            const mainContent = document.getElementById('main-content');
+            const quizSection = document.getElementById('quiz-section');
+
+            inputElement.classList.remove('shake-error');
+
+            if (inputVal === "17082023") {
+                intentosClave++;
+
+                if (intentosClave === 1) {
+                    mainGif.src = noGifSrc; 
+                    errorMsg.innerHTML = "¡Mmm, lo adivinaste! 🤔 Piénsalo mejor... <br><span style='font-size: 11px; color:#ff80ab;'>(Pista: Sí es, pero quiero que lo intentes de nuevo 🤭❤️)</span>";
+                    errorMsg.style.display = 'block';
+                    setTimeout(() => inputElement.classList.add('shake-error'), 10);
+                } else if (intentosClave === 2) {
+                    errorMsg.style.display = 'none';
+                    lockCard.style.transform = 'scale(0.8)';
+                    lockCard.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        transitionScreen.style.visibility = 'visible';
+                        transitionScreen.style.opacity = '1';
+                        
+                        setTimeout(() => {
+                            transitionScreen.style.opacity = '0';
+                            lockScreen.style.opacity = '0';
+                            
+                            setTimeout(() => {
+                                transitionScreen.style.display = 'none';
+                                lockScreen.style.display = 'none';
+                                
+                                mainContent.style.display = 'block';
+                                quizSection.style.display = 'flex';
+                                
+                                setTimeout(() => { mainContent.style.opacity = '1'; }, 50);
+                            }, 800);
+                        }, 2200); 
+                    }, 400);
+                }
+            } else {
+                mainGif.src = noGifSrc; 
+                errorMsg.innerText = "¡Frío, frío! Esa no es nuestra fecha amor. 🥺";
+                errorMsg.style.display = 'block';
+                setTimeout(() => inputElement.classList.add('shake-error'), 10); 
+            }
+        }
+
+        document.getElementById('passcode').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') verificarCodigo();
+        });
+
+
+        // --- SISTEMA DEL MINIJUEGO (QUIZ) ---
+        let quizPaso = 1;
+
+        function verificarRespuesta() {
+            const inputElement = document.getElementById('quiz-input');
+            const errorMsg = document.getElementById('quiz-error');
+            const quizTitle = document.getElementById('quiz-title');
+            const quizDesc = document.getElementById('quiz-desc');
+            const quizBtn = document.getElementById('quiz-btn');
+            const prizeGif = document.getElementById('prize-gif');
+            const storyBtn = document.getElementById('story-btn');
+            
+            let respuesta = inputElement.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            inputElement.classList.remove('shake-error');
+
+            if (quizPaso === 1) {
+                if (respuesta.includes("recoleta")) {
+                    quizPaso = 2;
+                    errorMsg.style.display = 'none';
+                    inputElement.value = "";
+                    
+                    quizTitle.innerText = "Pregunta 2/2";
+                    quizDesc.innerHTML = "¡Exacto! 😍<br><br>Ahora... ¿Qué es lo que más me gusta de ti? 😏";
+                    inputElement.placeholder = "Escribe aquí...";
+                } else {
+                    errorMsg.innerText = "Mmm... haz memoria. Fue en un lugar muy especial. 🤭";
+                    errorMsg.style.display = 'block';
+                    setTimeout(() => inputElement.classList.add('shake-error'), 10);
+                }
+            } 
+            else if (quizPaso === 2) {
+                if (respuesta.trim() === "") {
+                    errorMsg.innerText = "¡Escribe algo, no seas tramposa! 😂";
+                    errorMsg.style.display = 'block';
+                    setTimeout(() => inputElement.classList.add('shake-error'), 10);
+                    return;
+                }
+
+                errorMsg.style.display = 'none';
+                inputElement.style.display = "none";
+                quizBtn.style.display = "none";
+                
+                quizTitle.innerHTML = "<span style='color: #ff5252; text-shadow: 0 2px 10px rgba(255, 82, 82, 0.6); font-weight: bold;'>¡Meeec! ❌</span>";
+                quizDesc.innerHTML = "<strong style='color: #ff5252; font-size: 16px;'>¡Respuesta incorrecta!</strong><br><br>La verdad es que no hay una sola cosa... me gusta <b style='color:#ff80ab;'>absolutamente TODO</b> de ti. 😍💖";
+                
+                prizeGif.style.display = 'block';
+                storyBtn.style.display = 'block'; 
+            }
+        }
+
+        document.getElementById('quiz-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') verificarRespuesta();
+        });
+
+        // --- FUNCIÓN LLAVE: DESBLOQUEAR, OCULTAR EL MINIJUEGO Y MOVER A LA HISTORIA ---
+        function irALineaDeTiempo() {
+            const quizSection = document.getElementById('quiz-section');
+            const timelineContainer = document.getElementById('timeline-container');
+
+            // Desvanecer y ocultar el minijuego por completo antes de mover la pantalla
+            quizSection.style.opacity = '0';
+            quizSection.style.transform = 'scale(0.9)';
+
+            setTimeout(() => {
+                quizSection.style.display = 'none'; // Desaparece para siempre y evita el salto al hacer scroll hacia arriba
+                
+                timelineContainer.style.display = 'block';
+                setTimeout(() => {
+                    timelineContainer.style.opacity = '1';
+                    iniciarContador();
+                    timelineContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            }, 500);
+        }
+
+        // --- ACTUALIZAR PUNTITOS DE LOS CARRUSELES ---
+        function actualizarPuntitos(carouselId, dotsId) {
+            const carousel = document.getElementById(carouselId);
+            const dots = document.querySelectorAll(`#${dotsId} .dot`);
+            const scrollLeft = carousel.scrollLeft;
+            const width = carousel.offsetWidth;
+            const index = Math.round(scrollLeft / width);
+
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // --- LÓGICA DE ESCANEO BIOMÉTRICO ---
+        let yaEscaneado = false;
+
+        function iniciarEscaneoUnico() {
+            if (yaEscaneado) return;
+            yaEscaneado = true;
+
+            const wrapper = document.getElementById('fp-wrapper');
+            const instruction = document.getElementById('fp-instruction');
+            
+            instruction.style.opacity = '0';
+            setTimeout(() => { instruction.style.display = 'none'; }, 300);
+
+            wrapper.classList.add('scanning');
+
+            setTimeout(() => {
+                const msg = document.getElementById('secretMessage');
+                msg.classList.add('show');
+                wrapper.style.display = 'none';
+                
+                setTimeout(() => {
+                    msg.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }, 300);
+            }, 2000); 
+        }
+
+        // --- FUNCIONES DE LA LÍNEA DE TIEMPO ---
+        function toggleMemory(card) {
+            document.querySelectorAll('.memory-card').forEach(c => {
+                if (c !== card) c.classList.remove('active');
+            });
+            card.classList.toggle('active');
+        }
+
+        function iniciarContador() {
+            const startDate = new Date("2023-08-17T00:00:00");
+            function actualizar() {
+                const now = new Date();
+                const diff = now - startDate;
+                document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById('hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                document.getElementById('minutes').innerText = Math.floor((diff / 1000 / 60) % 60);
+                document.getElementById('seconds').innerText = Math.floor((diff / 1000) % 60);
+            }
+            actualizar();
+            setInterval(actualizar, 1000);
+        }
+    </script>
+</body>
+</html>

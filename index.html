@@ -1022,7 +1022,7 @@
         }
         setInterval(createHeart, 600);
 
-        // --- SISTEMA DE CLAVE SEGURA (ENCRIPTADA EN BASE64) ---
+        // --- SISTEMA DE CLAVE SEGURA ---
         let intentosClave = 0;
         const mainGif = document.getElementById('main-gif');
         const noGifSrc = "https://media.tenor.com/_6hs-gUk_z4AAAAi/stitch-stitch-no.gif";
@@ -1040,7 +1040,7 @@
 
             inputElement.classList.remove('shake-error');
 
-            // Contraseña "252717" encriptada en Base64
+            // Contraseña
             const passwordSecretaCodificada = "MjUyNzE3"; 
             const inputCodificado = btoa(inputVal);
 

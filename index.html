@@ -1022,14 +1022,12 @@
         }
         setInterval(createHeart, 600);
 
-        // --- SISTEMA DE CLAVE SEGURA ---
+        // --- SISTEMA DE CLAVE SEGURA (ENCRIPTADA EN BASE64) ---
         let intentosClave = 0;
         const mainGif = document.getElementById('main-gif');
         const noGifSrc = "https://media.tenor.com/_6hs-gUk_z4AAAAi/stitch-stitch-no.gif";
 
-        const hashSecretoEsperado = "a62624d623b369c372583af42d86162354c4f9cf2e25f7a07bf1229f279f5352";
-
-        async function verificarCodigo() {
+        function verificarCodigo() {
             const inputElement = document.getElementById('passcode');
             const inputVal = inputElement.value.trim().replace(/[\/\-\.]/g, '');
             const errorMsg = document.getElementById('error-msg');
@@ -1042,18 +1040,11 @@
 
             inputElement.classList.remove('shake-error');
 
-            if (!inputVal) {
-                errorMsg.innerText = "Por favor ingresa una clave. 🥺";
-                errorMsg.style.display = 'block';
-                return;
-            }
+            // Contraseña "252717" encriptada en Base64
+            const passwordSecretaCodificada = "MjUyNzE3"; 
+            const inputCodificado = btoa(inputVal);
 
-            const msgBuffer = new TextEncoder().encode(inputVal);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const inputHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-            if (inputHash === hashSecretoEsperado) {
+            if (inputCodificado === passwordSecretaCodificada) {
                 intentosClave++;
 
                 if (intentosClave === 1) {

@@ -694,7 +694,7 @@
         <div class="glass-card" id="lock-card">
             <img src="https://media.tenor.com/ir-_bntmpAgAAAAi/cocopry-stich.gif" alt="Stitch" class="lock-gif" id="main-gif">
             <h2>Para mi princesa</h2>
-            <p>Para desbloquear tu sorpresa, ingresa la fecha de nuestro aniversario 🤭❤️</p>
+            <p>Para desbloquear tu sorpresa, ingresa nuestra clave secreta 🤭❤️</p>
             <input type="password" id="passcode" class="lock-input" placeholder="" maxlength="10">
             <button class="lock-btn" onclick="verificarCodigo()">Desbloquear magia ✨</button>
             <div id="error-msg" class="error-msg"></div>
@@ -728,7 +728,7 @@
             <button class="lock-btn" id="story-btn" onclick="irALineaDeTiempo()">Ver nuestra historia 💖</button>
         </div>
 
-        <!-- PANTALLA 2: LÍNEA DE TIEMPO (INICIA CON EL STITCH PARADO DE MANOS Y EL TÍTULO) -->
+        <!-- PANTALLA 2: LÍNEA DE TIEMPO -->
         <div id="timeline-container">
             
             <div class="timeline-presentation">
@@ -1022,7 +1022,7 @@
         }
         setInterval(createHeart, 600);
 
-        // --- SISTEMA DE CLAVE (PANTALLA DE BLOQUEO) ---
+        // --- SISTEMA DE CLAVE SEGURA (ENCRIPTADA EN BASE64) ---
         let intentosClave = 0;
         const mainGif = document.getElementById('main-gif');
         const noGifSrc = "https://media.tenor.com/_6hs-gUk_z4AAAAi/stitch-stitch-no.gif";
@@ -1040,12 +1040,16 @@
 
             inputElement.classList.remove('shake-error');
 
-            if (inputVal === "272517") {
+            // Contraseña "252717" encriptada en Base64
+            const passwordSecretaCodificada = "MjUyNzE3"; 
+            const inputCodificado = btoa(inputVal);
+
+            if (inputCodificado === passwordSecretaCodificada) {
                 intentosClave++;
 
                 if (intentosClave === 1) {
                     mainGif.src = noGifSrc; 
-                    errorMsg.innerHTML = "¡Mmm, lo adivinaste! 🤔 Piénsalo mejor... <br><span style='font-size: 11px; color:#ff80ab;'>(Pista: Sí es, pero quiero que lo intentes de nuevo 🤭❤️)</span>";
+                    errorMsg.innerHTML = "¡Mmm, no lo adivinaste! 🤔 Piénsalo mejor... <br><span style='font-size: 11px; color:#ff80ab;'>(Pista: Sí es, pero quiero que lo intentes de nuevo 🤭❤️)</span>";
                     errorMsg.style.display = 'block';
                     setTimeout(() => inputElement.classList.add('shake-error'), 10);
                 } else if (intentosClave === 2) {
@@ -1075,7 +1079,7 @@
                 }
             } else {
                 mainGif.src = noGifSrc; 
-                errorMsg.innerText = "¡Frío, frío! Esa no es nuestra fecha amor. 🥺";
+                errorMsg.innerText = "¡Frío, frío! Esa no es nuestra clave amor. 🥺";
                 errorMsg.style.display = 'block';
                 setTimeout(() => inputElement.classList.add('shake-error'), 10); 
             }
@@ -1145,12 +1149,11 @@
             const quizSection = document.getElementById('quiz-section');
             const timelineContainer = document.getElementById('timeline-container');
 
-            // Desvanecer y ocultar el minijuego por completo antes de mover la pantalla
             quizSection.style.opacity = '0';
             quizSection.style.transform = 'scale(0.9)';
 
             setTimeout(() => {
-                quizSection.style.display = 'none'; // Desaparece para siempre y evita el salto al hacer scroll hacia arriba
+                quizSection.style.display = 'none'; 
                 
                 timelineContainer.style.display = 'block';
                 setTimeout(() => {
